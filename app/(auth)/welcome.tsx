@@ -1,7 +1,6 @@
 import React from "react";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import {
-  Image,
   Linking,
   StyleSheet,
   TouchableOpacity,
@@ -10,6 +9,15 @@ import {
 import { colors, spacingY } from "@/constants/theme";
 import { verticalScale } from "@/utils/styling";
 import Typo from "@/components/Typo";
+import Button from "@/components/Button";
+import Animated, { 
+  FadeIn, 
+  FadeInUp, 
+  FadeInDown, 
+  SlideInRight,
+  SlideInLeft,
+  BounceIn
+} from "react-native-reanimated";
 
 const Welcome = () => {
   const openInstagram = () => {
@@ -18,29 +26,59 @@ const Welcome = () => {
       console.error("Error al abrir Instagram:", err)
     );
   };
+
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        <View>
+        <Animated.View entering={SlideInRight.delay(200).duration(800)}>
           <TouchableOpacity style={styles.loginButton}>
             <Typo fontWeight={"500"}>Iniciar sesión</Typo>
           </TouchableOpacity>
-          <Image
+        </Animated.View>
+
+        <Animated.View 
+          style={styles.imageContainer}
+          entering={BounceIn.delay(400).duration(1200)}
+        >
+          <Animated.Image
+            entering={FadeIn.delay(600).duration(1500)}
             source={require("@/assets/images/welcome.png")}
             style={styles.welcomeImage}
             resizeMode="contain"
           />
-        </View>
-        <View style={styles.footer}>
-          <View style={{ alignItems: "center" }}>
+        </Animated.View>
+
+        <Animated.View 
+          style={styles.footer}
+          entering={FadeInUp.delay(800).duration(1000)}
+        >
+          <Animated.View 
+            style={styles.titleContainer}
+            entering={FadeInDown.delay(1000).duration(800)}
+          >
             <Typo size={25} fontWeight={"800"}>
               TOMA EL CONTROL DE TUS
             </Typo>
-            <Typo size={25} fontWeight={"900"} color="yellow">
+            <Typo size={25} fontWeight={"900"} color="#fed429">
               FINANZAS
             </Typo>
-          </View>
-          <View style={{ alignItems: "center", gap: 2 }}>
+          </Animated.View>
+
+          <Animated.View 
+            style={styles.buttonContainer}
+            entering={BounceIn.delay(1400).duration(1000)}
+          >
+            <Button>
+              <Typo size={22} fontWeight={"800"} color={colors.neutral900}>
+                Comenzar
+              </Typo>
+            </Button>
+          </Animated.View>
+
+          <Animated.View 
+            style={styles.creditContainer}
+            entering={SlideInLeft.delay(1200).duration(800)}
+          >
             <Typo size={16} color={colors.text}>
               Desarrollada por:
             </Typo>
@@ -48,13 +86,13 @@ const Welcome = () => {
               <Typo
                 size={16}
                 color={colors.text}
-                style={{ textDecorationLine: "none" }}
+                style={styles.developerText}
               >
                 &copy; Felipe Reyes Sanchez
               </Typo>
             </TouchableOpacity>
-          </View>
-        </View>
+          </Animated.View>
+        </Animated.View>
       </View>
     </ScreenWrapper>
   );
@@ -68,15 +106,21 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingTop: spacingY._7,
   },
+  imageContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   welcomeImage: {
     width: "100%",
     height: verticalScale(400),
     alignSelf: "center",
-    marginTop: verticalScale(50),
   },
   loginButton: {
     alignSelf: "flex-end",
     marginRight: spacingY._20,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
   },
   footer: {
     backgroundColor: colors.neutral900,
@@ -89,6 +133,20 @@ const styles = StyleSheet.create({
     elevation: 10,
     shadowRadius: 25,
     shadowOpacity: 0.15,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+  },
+  titleContainer: {
+    alignItems: "center",
+    gap: 5,
+  },
+  creditContainer: {
+    alignItems: "center",
+    gap: 2,
+  },
+  developerText: {
+    textDecorationLine: "underline",
+    opacity: 0.8,
   },
   buttonContainer: {
     width: "100%",
