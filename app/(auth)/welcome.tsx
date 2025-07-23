@@ -1,25 +1,22 @@
 import React from "react";
 import ScreenWrapper from "@/components/ScreenWrapper";
-import {
-  Linking,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Linking, StyleSheet, TouchableOpacity, View } from "react-native";
 import { colors, spacingY } from "@/constants/theme";
 import { verticalScale } from "@/utils/styling";
 import Typo from "@/components/Typo";
 import Button from "@/components/Button";
-import Animated, { 
-  FadeIn, 
-  FadeInUp, 
-  FadeInDown, 
+import Animated, {
+  FadeIn,
+  FadeInUp,
+  FadeInDown,
   SlideInRight,
   SlideInLeft,
-  BounceIn
+  BounceIn,
 } from "react-native-reanimated";
+import { useRouter } from "expo-router";
 
 const Welcome = () => {
+  const router = useRouter();
   const openInstagram = () => {
     const instagramUrl = "https://www.instagram.com/felipesanchez_dev";
     Linking.openURL(instagramUrl).catch((err) =>
@@ -31,12 +28,15 @@ const Welcome = () => {
     <ScreenWrapper>
       <View style={styles.container}>
         <Animated.View entering={SlideInRight.delay(200).duration(800)}>
-          <TouchableOpacity style={styles.loginButton}>
+          <TouchableOpacity
+            onPress={() => router.push("/(auth)/login")}
+            style={styles.loginButton}
+          >
             <Typo fontWeight={"500"}>Iniciar sesión</Typo>
           </TouchableOpacity>
         </Animated.View>
 
-        <Animated.View 
+        <Animated.View
           style={styles.imageContainer}
           entering={BounceIn.delay(400).duration(1200)}
         >
@@ -48,11 +48,11 @@ const Welcome = () => {
           />
         </Animated.View>
 
-        <Animated.View 
+        <Animated.View
           style={styles.footer}
           entering={FadeInUp.delay(800).duration(1000)}
         >
-          <Animated.View 
+          <Animated.View
             style={styles.titleContainer}
             entering={FadeInDown.delay(1000).duration(800)}
           >
@@ -64,18 +64,18 @@ const Welcome = () => {
             </Typo>
           </Animated.View>
 
-          <Animated.View 
+          <Animated.View
             style={styles.buttonContainer}
             entering={BounceIn.delay(1400).duration(1000)}
           >
-            <Button>
+            <Button onPress={() => router.push("/(auth)/login")}>
               <Typo size={22} fontWeight={"800"} color={colors.neutral900}>
                 Comenzar
               </Typo>
             </Button>
           </Animated.View>
 
-          <Animated.View 
+          <Animated.View
             style={styles.creditContainer}
             entering={SlideInLeft.delay(1200).duration(800)}
           >
@@ -83,11 +83,7 @@ const Welcome = () => {
               Desarrollada por:
             </Typo>
             <TouchableOpacity onPress={openInstagram}>
-              <Typo
-                size={16}
-                color={colors.text}
-                style={styles.developerText}
-              >
+              <Typo size={16} color={colors.text} style={styles.developerText}>
                 &copy; Felipe Reyes Sanchez
               </Typo>
             </TouchableOpacity>
