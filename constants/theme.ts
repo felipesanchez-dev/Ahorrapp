@@ -1,15 +1,17 @@
 import { scale, verticalScale } from "@/utils/styling";
 
 export const colors = {
-  primary: "#a3e635",
+  primary: "#fed429",
   primaryLight: "#0ea5e9",
   primaryDark: "#0369a1",
   text: "#fff",
   textLight: "#e5e5e5",
   textLighter: "#d4d4d4",
+  textPrimary: "#fff",
   white: "#fff",
   black: "#000",
   rose: "#ef4444",
+  error: "#ef4444",
   green: "#16a34a",
   neutral50: "#fafafa",
   neutral100: "#f5f5f5",
@@ -21,6 +23,7 @@ export const colors = {
   neutral600: "#525252",
   neutral700: "#404040",
   neutral800: "#262626",
+  neutral850: "#1a1a1a", 
   neutral900: "#171717",
 };
 
@@ -28,9 +31,11 @@ export const spacingX = {
   _3: scale(3),
   _5: scale(5),
   _7: scale(7),
+  _8: scale(8), 
   _10: scale(10),
   _12: scale(12),
   _15: scale(15),
+  _16: scale(16),
   _20: scale(20),
   _25: scale(25),
   _30: scale(30),
@@ -41,6 +46,7 @@ export const spacingX = {
 export const spacingY = {
   _5: verticalScale(5),
   _7: verticalScale(7),
+  _8: verticalScale(8),
   _10: verticalScale(10),
   _12: verticalScale(12),
   _15: verticalScale(15),
