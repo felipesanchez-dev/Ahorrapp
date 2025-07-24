@@ -9,11 +9,13 @@ import Input from "@/components/Input";
 import * as Icons from "phosphor-react-native";
 import Button from "@/components/Button";
 import { useRouter } from "expo-router";
+import { useAuth } from "@/contexts/authContext";
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { register: registerUser } = useAuth();
 
   const nameRef = useRef("");
   const emailRef = useRef("");
@@ -21,21 +23,21 @@ const Register = () => {
 
   const handleSubmit = async () => {
     if (!nameRef.current || !emailRef.current || !passwordRef.current) {
-      Alert.alert("Error", "Por favor, completa todos los campos para crear una cuenta.");
+      Alert.alert(
+        "Error",
+        "Por favor, completa todos los campos para crear una cuenta."
+      );
       return;
     }
-    
     setIsLoading(true);
-    
-    setTimeout(() => {
+    const res = await registerUser(
+      emailRef.current,
+      passwordRef.current,
+      nameRef.current
+    );
+    if (!res.success) {
       setIsLoading(false);
-      Alert.alert("Éxito", "Cuenta creada exitosamente");
-      console.log("Registering user:", {
-        name: nameRef.current,
-        email: emailRef.current,
-        password: passwordRef.current,
-      });
-    }, 2000);
+    }
   };
 
   return (
@@ -131,8 +133,8 @@ const Register = () => {
             </View>
           </View>
 
-          <Button 
-            loading={isLoading} 
+          <Button
+            loading={isLoading}
             onPress={handleSubmit}
             style={styles.registerButton}
           >

@@ -3,7 +3,6 @@ import {
   View,
   Text,
   Pressable,
-  Alert,
   Animated,
   Easing,
 } from "react-native";
@@ -17,6 +16,7 @@ import Input from "@/components/Input";
 import * as Icons from "phosphor-react-native";
 import Button from "@/components/Button";
 import { useRouter } from "expo-router";
+import { useAuth } from "@/contexts/authContext";
 
 interface ValidateEmailFn {
   (email: string): string | null;
@@ -45,6 +45,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { login: loginUser } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -257,15 +258,11 @@ const Login = () => {
 
     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-      Alert.alert("Éxito", "Inicio de sesión exitoso", [
-        {
-          text: "OK",
-          onPress: () => router.push("/"),
-        },
-      ]);
-    }, 2000);
+    const res = await loginUser(email, password);
+    setIsLoading(false);
+    if (!res.success) {
+      console.log("Login failed:", res.msg);
+    }
   };
 
   const handlePasswordToggle = () => {
