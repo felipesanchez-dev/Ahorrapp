@@ -1,24 +1,50 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, View } from "react-native";
+import React from "react";
+import ScreenWrapper from "@/components/ScreenWrapper";
+import { colors, spacingX, spacingY } from "@/constants/theme";
+import { verticalScale } from "@/utils/styling";
+import BackButton from "@/components/BackButton";
 
 const login = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>login</Text>
-    </View>
-  )
-}
+    <ScreenWrapper>
+      <View style={styles.container}>
+        <BackButton />
+      </View>
+    </ScreenWrapper>
+  );
+};
 
-export default login
+export default login;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    gap: spacingY._30,
+    paddingHorizontal: spacingX._20,
   },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  welcomeText: {
+    fontSize: verticalScale(20),
+    fontWeight: "bold",
+    color: colors.primary,
   },
-})
+  form: {
+    gap: spacingY._20,
+  },
+  forgotPassword: {
+    textAlign: "right",
+    fontWeight: "500",
+    color: colors.text,
+  },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 5,
+  },
+  footerText: {
+    textAlign: "center",
+    color: colors.text,
+    fontSize: verticalScale(15),
+  },
+});
