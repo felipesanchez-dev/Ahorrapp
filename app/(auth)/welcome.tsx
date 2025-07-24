@@ -27,15 +27,6 @@ const Welcome = () => {
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        <Animated.View entering={SlideInRight.delay(200).duration(800)}>
-          <TouchableOpacity
-            onPress={() => router.push("/(auth)/login")}
-            style={styles.loginButton}
-          >
-            <Typo fontWeight={"500"}>Iniciar sesión</Typo>
-          </TouchableOpacity>
-        </Animated.View>
-
         <Animated.View
           style={styles.imageContainer}
           entering={BounceIn.delay(400).duration(1200)}

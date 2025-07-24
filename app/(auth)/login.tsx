@@ -1,4 +1,12 @@
-import { StyleSheet, View, Text, Pressable, Alert, Animated, Easing } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Pressable,
+  Alert,
+  Animated,
+  Easing,
+} from "react-native";
 import React, { useRef, useState, useEffect } from "react";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import { colors, spacingX, spacingY } from "@/constants/theme";
@@ -17,7 +25,8 @@ interface ValidateEmailFn {
 const validateEmail: ValidateEmailFn = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!email.trim()) return "El correo electrónico es requerido";
-  if (!emailRegex.test(email.trim())) return "Ingresa un correo electrónico válido";
+  if (!emailRegex.test(email.trim()))
+    return "Ingresa un correo electrónico válido";
   return null;
 };
 
@@ -27,7 +36,8 @@ interface ValidatePasswordFn {
 
 const validatePassword: ValidatePasswordFn = (password) => {
   if (!password.trim()) return "La contraseña es requerida";
-  if (password.trim().length < 6) return "La contraseña debe tener al menos 6 caracteres";
+  if (password.trim().length < 6)
+    return "La contraseña debe tener al menos 6 caracteres";
   return null;
 };
 
@@ -128,7 +138,7 @@ const Login = () => {
       ]).start(() => pulseAnimation());
     };
     pulseAnimation();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   interface AnimateErrorFn {
@@ -165,11 +175,11 @@ const Login = () => {
 
   const handleEmailChange: HandleEmailChangeFn = (value) => {
     setEmail(value);
-    
+
     if (emailTouched && showEmailError) {
       const error = validateEmail(value);
       setEmailError(error || "");
-      
+
       if (!error) {
         animateErrorOut(emailErrorAnim);
         setTimeout(() => setShowEmailError(false), 200);
@@ -183,11 +193,11 @@ const Login = () => {
 
   const handlePasswordChange: HandlePasswordChangeFn = (value) => {
     setPassword(value);
-    
+
     if (passwordTouched && showPasswordError) {
       const error = validatePassword(value);
       setPasswordError(error || "");
-      
+
       if (!error) {
         animateErrorOut(passwordErrorAnim);
         setTimeout(() => setShowPasswordError(false), 200);
@@ -198,7 +208,7 @@ const Login = () => {
   const handleEmailBlur = () => {
     setEmailTouched(true);
     const error = validateEmail(email);
-    
+
     if (error) {
       setEmailError(error);
       setShowEmailError(true);
@@ -209,7 +219,7 @@ const Login = () => {
   const handlePasswordBlur = () => {
     setPasswordTouched(true);
     const error = validatePassword(password);
-    
+
     if (error) {
       setPasswordError(error);
       setShowPasswordError(true);
@@ -252,7 +262,7 @@ const Login = () => {
       Alert.alert("Éxito", "Inicio de sesión exitoso", [
         {
           text: "OK",
-          onPress: () => router.push("/"), 
+          onPress: () => router.push("/"),
         },
       ]);
     }, 2000);
@@ -271,13 +281,13 @@ const Login = () => {
         useNativeDriver: true,
       }),
     ]).start();
-    
+
     setShowPassword(!showPassword);
   };
 
   const logoRotation = logoRotateAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
+    outputRange: ["0deg", "360deg"],
   });
 
   return (
@@ -287,7 +297,7 @@ const Login = () => {
           <BackButton />
         </View>
 
-        <Animated.View 
+        <Animated.View
           style={[
             styles.content,
             {
@@ -297,7 +307,7 @@ const Login = () => {
           ]}
         >
           <View style={styles.brandSection}>
-            <Animated.View 
+            <Animated.View
               style={[
                 styles.logoContainer,
                 {
@@ -322,7 +332,7 @@ const Login = () => {
             </Typo>
           </View>
 
-          <Animated.View 
+          <Animated.View
             style={[
               styles.form,
               {
@@ -346,23 +356,29 @@ const Login = () => {
                 icon={
                   <Icons.AtIcon
                     size={verticalScale(18)}
-                    color={showEmailError && emailError ? colors.error : colors.neutral400}
+                    color={
+                      showEmailError && emailError
+                        ? colors.error
+                        : colors.neutral400
+                    }
                   />
                 }
               />
               {showEmailError && emailError && (
-                <Animated.View 
+                <Animated.View
                   style={[
                     styles.errorContainer,
                     {
                       opacity: emailErrorAnim,
-                      transform: [{
-                        translateY: emailErrorAnim.interpolate({
-                          inputRange: [0, 1],
-                          outputRange: [-10, 0],
-                        })
-                      }]
-                    }
+                      transform: [
+                        {
+                          translateY: emailErrorAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [-10, 0],
+                          }),
+                        },
+                      ],
+                    },
                   ]}
                 >
                   <Icons.WarningCircleIcon
@@ -391,7 +407,11 @@ const Login = () => {
                   icon={
                     <Icons.LockIcon
                       size={verticalScale(18)}
-                      color={showPasswordError && passwordError ? colors.error : colors.neutral400}
+                      color={
+                        showPasswordError && passwordError
+                          ? colors.error
+                          : colors.neutral400
+                      }
                     />
                   }
                 />
@@ -399,7 +419,9 @@ const Login = () => {
                   style={styles.passwordToggle}
                   onPress={handlePasswordToggle}
                 >
-                  <Animated.View style={{ transform: [{ scale: eyeScaleAnim }] }}>
+                  <Animated.View
+                    style={{ transform: [{ scale: eyeScaleAnim }] }}
+                  >
                     {showPassword ? (
                       <Icons.EyeSlashIcon
                         size={verticalScale(18)}
@@ -415,18 +437,20 @@ const Login = () => {
                 </Pressable>
               </View>
               {showPasswordError && passwordError && (
-                <Animated.View 
+                <Animated.View
                   style={[
                     styles.errorContainer,
                     {
                       opacity: passwordErrorAnim,
-                      transform: [{
-                        translateY: passwordErrorAnim.interpolate({
-                          inputRange: [0, 1],
-                          outputRange: [-10, 0],
-                        })
-                      }]
-                    }
+                      transform: [
+                        {
+                          translateY: passwordErrorAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [-10, 0],
+                          }),
+                        },
+                      ],
+                    },
                   ]}
                 >
                   <Icons.WarningCircleIcon
@@ -458,7 +482,7 @@ const Login = () => {
             </Button>
           </Animated.View>
 
-          <Animated.View 
+          <Animated.View
             style={[
               styles.registerCard,
               {
@@ -472,16 +496,25 @@ const Login = () => {
                 color={colors.primary}
                 weight="bold"
               />
-              <Typo size={16} fontWeight="700" color={colors.textPrimary} style={styles.cardTitle}>
+              <Typo
+                size={16}
+                fontWeight="700"
+                color={colors.textPrimary}
+                style={styles.cardTitle}
+              >
                 ¿Nuevo en Ahorrapp?
               </Typo>
             </View>
-            <Typo size={14} color={colors.textLight} style={styles.cardDescription}>
+            <Typo
+              size={14}
+              color={colors.textLight}
+              style={styles.cardDescription}
+            >
               Únete a miles de usuarios que ya están mejorando sus finanzas
             </Typo>
-            <Pressable 
+            <Pressable
               style={styles.registerButton}
-              onPress={() => router.push("/(auth)/register")}
+              onPress={() => router.navigate("/(auth)/register")}
             >
               <Typo size={15} fontWeight="600" color={colors.primary}>
                 Crear cuenta gratuita

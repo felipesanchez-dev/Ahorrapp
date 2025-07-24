@@ -145,7 +145,7 @@ const Register = () => {
             <Typo size={14} color={colors.textLight}>
               ¿Ya tienes una cuenta?{" "}
             </Typo>
-            <Pressable onPress={() => router.push("/(auth)/login")}>
+            <Pressable onPress={() => router.navigate("/(auth)/login")}>
               <Typo size={14} fontWeight="600" color={colors.primary}>
                 Inicia sesión
               </Typo>
