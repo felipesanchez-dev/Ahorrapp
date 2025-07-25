@@ -30,13 +30,13 @@ const Profile = () => {
       title: "Ajustes",
       icon: <Icons.GearSixIcon size={26} color={colors.white} weight="fill" />,
       bgColor: "#059669",
-      routeName: "/(modals)/profileModal",
+      // routeName: "/(modals)/profileModal",
     },
     {
       title: "Politicas de privacidad",
       icon: <Icons.LockIcon size={26} color={colors.white} weight="fill" />,
       bgColor: "#6366f1",
-      routeName: "/(modals)/profileModal",
+      // routeName: "/(modals)/profileModal",
     },
     {
       title: "Otras aplicaciones",
@@ -54,7 +54,7 @@ const Profile = () => {
       title: "Cerrar sesión",
       icon: <Icons.SignOutIcon size={26} color={colors.white} weight="fill" />,
       bgColor: "#dc2626",
-      routeName: "/(modals)/profileModal",
+      // routeName: "/(modals)/profileModal",
     },
   ];
 
