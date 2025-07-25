@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     top: verticalScale(15),
     height: verticalScale(38),
     borderRadius: 99,
-    backgroundColor: colors.white,
+    backgroundColor: colors.neutral600,
     zIndex: 0,
   },
   label: {
