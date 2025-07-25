@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useAuth } from "@/contexts/authContext";
 
 const Index = () => {
-  const { user } = useAuth(); // Obtén el usuario del contexto
+  const { user } = useAuth();
   const router = useRouter();
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
