@@ -1,8 +1,10 @@
 import { Image, StyleSheet, View, Animated, Easing } from "react-native";
 import { useRouter } from "expo-router";
 import { useEffect, useRef } from "react";
+import { useAuth } from "@/contexts/authContext";
 
 const Index = () => {
+  const { user } = useAuth(); // Obtén el usuario del contexto
   const router = useRouter();
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
@@ -57,9 +59,13 @@ const Index = () => {
       ]),
     ]).start();
     setTimeout(() => {
-      router.push("/(auth)/welcome");
+      if (user) {
+        router.replace("/(tabs)");
+      } else {
+        router.push("/(auth)/welcome");
+      }
     }, 4000);
-  }, [router, scaleAnim, opacityAnim, rotateAnim, bounceAnim]);
+  }, [router, scaleAnim, opacityAnim, rotateAnim, bounceAnim, user]);
 
   const rotate = rotateAnim.interpolate({
     inputRange: [0, 1],

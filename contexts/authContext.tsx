@@ -1,6 +1,5 @@
 import { auth, firestore } from "@/config/firebase";
 import { AuthContextType, UserType } from "@/types";
-import { router } from "expo-router";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -16,7 +15,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<UserType | null>(null);
 
-
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
@@ -25,10 +23,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           email: firebaseUser?.email,
           name: firebaseUser?.displayName,
         });
-        setTimeout(() => {
-          // @ts-ignore
-          router.replace("/(tabs)");
-        }, 2000);
       } else {
         setUser(null);
       }
@@ -68,7 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const updateUserData = async (uid: string) => {
+  const updateUserData = async (uid: string): Promise<void> => {
     try {
       const docRef = doc(firestore, "users", uid);
       const docSnap = await getDoc(docRef);
@@ -84,12 +78,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setUser({ ...userData });
       }
     } catch (error: unknown) {
-      let msg = (error as any).message;
-      // return {
-      //   success: false,
-      //   msg,
-      // };
-      console.log("error", error + " " + msg);
+      console.error("Failed to update user data:", error);
     }
   };
 

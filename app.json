@@ -37,6 +37,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "firebaseApiKey": "AIzaSyDy0U-4oMHaNqnuJEU4lePM27l7D83UWG0",
+      "firebaseAuthDomain": "ahorrapp-271a9.firebaseapp.com",
+      "firebaseProjectId": "ahorrapp-271a9",
+      "firebaseStorageBucket": "ahorrapp-271a9.appspot.com",
+      "firebaseMessagingSenderId": "916279026780",
+      "firebaseAppId": "1:916279026780:web:8290b05e73d4a61649f299"
     }
   }
 }
