@@ -1,18 +1,37 @@
 import { Image, StyleSheet, View, Animated, Easing } from "react-native";
 import { useRouter } from "expo-router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/contexts/authContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Index = () => {
   const { user } = useAuth();
   const router = useRouter();
+  const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
+
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
   const rotateAnim = useRef(new Animated.Value(0)).current;
   const bounceAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Animated.sequence([
+    const checkFirstTime = async () => {
+      try {
+        const hasOpenedApp = await AsyncStorage.getItem("hasOpenedApp");
+        if (hasOpenedApp === null) {
+          setIsFirstTime(true);
+        } else {
+          setIsFirstTime(false);
+        }
+      } catch (error) {
+        console.error("Failed to access AsyncStorage:", error);
+        setIsFirstTime(true);
+      }
+    };
+
+    checkFirstTime();
+
+    const animationSequence = Animated.sequence([
       Animated.parallel([
         Animated.timing(opacityAnim, {
           toValue: 1,
@@ -57,15 +76,28 @@ const Index = () => {
           { iterations: 2 }
         ),
       ]),
-    ]).start();
-    setTimeout(() => {
-      if (user) {
+    ]);
+
+    animationSequence.start(() => {
+      if (isFirstTime === null) return;
+
+      if (isFirstTime) {
+        router.replace("/(auth)/welcome");
+      } else if (user) {
         router.replace("/(tabs)");
       } else {
-        router.push("/(auth)/welcome");
+        router.replace("/(auth)/login");
       }
-    }, 4000);
-  }, [router, scaleAnim, opacityAnim, rotateAnim, bounceAnim, user]);
+    });
+  }, [
+    router,
+    scaleAnim,
+    opacityAnim,
+    rotateAnim,
+    bounceAnim,
+    user,
+    isFirstTime,
+  ]);
 
   const rotate = rotateAnim.interpolate({
     inputRange: [0, 1],

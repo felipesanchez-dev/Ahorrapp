@@ -1,5 +1,12 @@
-import { StyleSheet, View, Text, Pressable, Alert } from "react-native";
-import React, { useRef, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Pressable,
+  Alert,
+  Animated,
+} from "react-native";
+import React, { useState } from "react";
 import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { colors, spacingX, spacingY } from "@/constants/theme";
 import { verticalScale } from "@/utils/styling";
@@ -14,29 +21,66 @@ import Button from "@/components/ui/Button";
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
   const { register: registerUser } = useAuth();
 
-  const nameRef = useRef("");
-  const emailRef = useRef("");
-  const passwordRef = useRef("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const validate = () => {
+    const newErrors = { name: "", email: "", password: "", confirmPassword: "" };
+    let isValid = true;
+
+    if (!name.trim()) {
+      newErrors.name = "El nombre es requerido";
+      isValid = false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) {
+      newErrors.email = "El correo electrónico es requerido";
+      isValid = false;
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Ingresa un correo electrónico válido";
+      isValid = false;
+    }
+
+    if (!password.trim()) {
+      newErrors.password = "La contraseña es requerida";
+      isValid = false;
+    } else if (password.length < 6) {
+      newErrors.password = "La contraseña debe tener al menos 6 caracteres";
+      isValid = false;
+    }
+
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Las contraseñas no coinciden";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleSubmit = async () => {
-    if (!nameRef.current || !emailRef.current || !passwordRef.current) {
-      Alert.alert(
-        "Error",
-        "Por favor, completa todos los campos para crear una cuenta."
-      );
-      return;
-    }
+    if (!validate()) return;
+
     setIsLoading(true);
-    const res = await registerUser(
-      emailRef.current,
-      passwordRef.current,
-      nameRef.current
-    );
+    const res = await registerUser(email, password, name);
+    setIsLoading(false);
+
     if (!res.success) {
-      setIsLoading(false);
+      Alert.alert("Error de Registro", res.msg);
     }
   };
 
@@ -68,45 +112,79 @@ const Register = () => {
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Nombre completo</Text>
               <Input
-                onChangeText={(value) => (nameRef.current = value)}
+                value={name}
+                onChangeText={setName}
                 autoCapitalize="words"
-                containerStyle={styles.inputContainer}
+                containerStyle={[
+                  styles.inputContainer,
+                  errors.name ? styles.inputError : null,
+                ]}
                 icon={
                   <Icons.UserIcon
                     size={verticalScale(20)}
-                    color={colors.neutral400}
+                    color={errors.name ? colors.error : colors.neutral400}
                   />
                 }
               />
+              {errors.name && (
+                <Animated.View style={styles.errorContainer}>
+                  <Icons.WarningCircleIcon
+                    size={verticalScale(14)}
+                    color={colors.error}
+                    weight="fill"
+                  />
+                  <Text style={styles.errorText}>{errors.name}</Text>
+                </Animated.View>
+              )}
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Correo electrónico</Text>
               <Input
-                onChangeText={(value) => (emailRef.current = value)}
+                value={email}
+                onChangeText={setEmail}
                 keyboardType="email-address"
                 autoCapitalize="none"
-                containerStyle={styles.inputContainer}
+                containerStyle={[
+                  styles.inputContainer,
+                  errors.email ? styles.inputError : null,
+                ]}
                 icon={
                   <Icons.AtIcon
                     size={verticalScale(20)}
-                    color={colors.neutral400}
+                    color={errors.email ? colors.error : colors.neutral400}
                   />
                 }
               />
+              {errors.email && (
+                <Animated.View style={styles.errorContainer}>
+                  <Icons.WarningCircleIcon
+                    size={verticalScale(14)}
+                    color={colors.error}
+                    weight="fill"
+                  />
+                  <Text style={styles.errorText}>{errors.email}</Text>
+                </Animated.View>
+              )}
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Contraseña</Text>
               <View style={styles.passwordInputContainer}>
                 <Input
-                  onChangeText={(value) => (passwordRef.current = value)}
+                  value={password}
+                  onChangeText={setPassword}
                   secureTextEntry={!showPassword}
-                  containerStyle={styles.inputContainer}
+                  containerStyle={[
+                    styles.inputContainer,
+                    errors.password ? styles.inputError : null,
+                  ]}
                   icon={
                     <Icons.LockIcon
                       size={verticalScale(20)}
-                      color={colors.neutral400}
+                      color={
+                        errors.password ? colors.error : colors.neutral400
+                      }
                     />
                   }
                 />
@@ -127,6 +205,69 @@ const Register = () => {
                   )}
                 </Pressable>
               </View>
+              {errors.password && (
+                <Animated.View style={styles.errorContainer}>
+                  <Icons.WarningCircleIcon
+                    size={verticalScale(14)}
+                    color={colors.error}
+                    weight="fill"
+                  />
+                  <Text style={styles.errorText}>{errors.password}</Text>
+                </Animated.View>
+              )}
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Confirmar Contraseña</Text>
+              <View style={styles.passwordInputContainer}>
+                <Input
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  secureTextEntry={!showConfirmPassword}
+                  containerStyle={[
+                    styles.inputContainer,
+                    errors.confirmPassword ? styles.inputError : null,
+                  ]}
+                  icon={
+                    <Icons.LockKeyIcon
+                      size={verticalScale(20)}
+                      color={
+                        errors.confirmPassword
+                          ? colors.error
+                          : colors.neutral400
+                      }
+                    />
+                  }
+                />
+                <Pressable
+                  style={styles.passwordToggle}
+                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? (
+                    <Icons.EyeSlashIcon
+                      size={verticalScale(20)}
+                      color={colors.neutral400}
+                    />
+                  ) : (
+                    <Icons.EyeIcon
+                      size={verticalScale(20)}
+                      color={colors.neutral400}
+                    />
+                  )}
+                </Pressable>
+              </View>
+              {errors.confirmPassword && (
+                <Animated.View style={styles.errorContainer}>
+                  <Icons.WarningCircleIcon
+                    size={verticalScale(14)}
+                    color={colors.error}
+                    weight="fill"
+                  />
+                  <Text style={styles.errorText}>
+                    {errors.confirmPassword}
+                  </Text>
+                </Animated.View>
+              )}
             </View>
           </View>
 
@@ -136,7 +277,7 @@ const Register = () => {
             style={styles.registerButton}
           >
             <Typo size={16} fontWeight="600" color={colors.black}>
-              {isLoading ? "Creando cuenta..." : "Crear cuenta"}
+              Crear cuenta
             </Typo>
           </Button>
 
@@ -212,6 +353,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: verticalScale(12),
   },
+  inputError: {
+    borderColor: colors.error,
+  },
   passwordInputContainer: {
     position: "relative",
   },
@@ -232,5 +376,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexWrap: "wrap",
+  },
+  errorContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: spacingY._8,
+    paddingHorizontal: spacingX._5,
+  },
+  errorText: {
+    fontSize: verticalScale(12),
+    color: colors.error,
+    marginLeft: spacingX._5,
+    fontWeight: "500",
+    flex: 1,
   },
 });

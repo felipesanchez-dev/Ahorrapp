@@ -7,6 +7,7 @@ import {
 } from "firebase/auth";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "expo-router";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -14,15 +15,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<UserType | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
-        setUser({
-          uid: firebaseUser.uid,
-          email: firebaseUser?.email,
-          name: firebaseUser?.displayName,
-        });
         updateUserData(firebaseUser.uid);
       } else {
         setUser(null);
@@ -34,13 +31,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-
+      router.replace("/(tabs)");
       return { success: true };
     } catch (error: any) {
       let msg = error.message;
       if (msg.includes("auth/user-not-found")) {
         msg =
           "Usuario no encontrado. Por favor, verifica tu correo electrónico.";
+      } else if (msg.includes("auth/wrong-password")) {
+        msg = "Contraseña incorrecta. Por favor, inténtalo de nuevo.";
       }
       return {
         success: false,
@@ -61,9 +60,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         email,
         uid: response.user.uid,
       });
+      router.replace("/(tabs)");
       return { success: true };
-    } catch (error) {
-      let msg = (error as any).message;
+    } catch (error: any) {
+      let msg = error.message;
+      if (msg.includes("auth/email-already-in-use")) {
+        msg = "Este correo electrónico ya está en uso.";
+      }
       return { success: false, msg };
     }
   };

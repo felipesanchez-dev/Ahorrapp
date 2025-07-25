@@ -14,6 +14,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useRouter } from "expo-router";
 import Button from "@/components/ui/Button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Welcome = () => {
   const router = useRouter();
@@ -22,6 +23,15 @@ const Welcome = () => {
     Linking.openURL(instagramUrl).catch((err) =>
       console.error("Error al abrir Instagram:", err)
     );
+  };
+
+  const handleStart = async () => {
+    try {
+      await AsyncStorage.setItem("hasOpenedApp", "true");
+      router.push("/(auth)/login");
+    } catch (error) {
+      console.error("Failed to set AsyncStorage item:", error);
+    }
   };
 
   return (
@@ -67,7 +77,7 @@ const Welcome = () => {
             style={styles.buttonContainer}
             entering={BounceIn.delay(1400).duration(1000)}
           >
-            <Button onPress={() => router.push("/(auth)/login")}>
+            <Button onPress={handleStart}>
               <Typo size={22} fontWeight={"800"} color={colors.neutral900}>
                 Comenzar
               </Typo>
