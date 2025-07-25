@@ -23,6 +23,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           email: firebaseUser?.email,
           name: firebaseUser?.displayName,
         });
+        updateUserData(firebaseUser.uid);
       } else {
         setUser(null);
       }
@@ -36,6 +37,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       return { success: true };
     } catch (error: any) {
       let msg = error.message;
+      if (msg.includes("auth/user-not-found")) {
+        msg =
+          "Usuario no encontrado. Por favor, verifica tu correo electrónico.";
+      }
+      if (msg.includes("auth/wrong-password")) {
+        msg = "La contraseña es incorrecta. Por favor, verifica tu contraseña.";
+      }
+      if (msg.includes("auth/invalid-email")) {
+        msg = "El correo electrónico ingresado no es válido.";
+      }
       return {
         success: false,
         msg,
