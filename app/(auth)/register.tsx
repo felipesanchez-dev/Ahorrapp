@@ -69,7 +69,6 @@ const Register = () => {
               <Text style={styles.label}>Nombre completo</Text>
               <Input
                 onChangeText={(value) => (nameRef.current = value)}
-                placeholder="Tu nombre completo"
                 autoCapitalize="words"
                 containerStyle={styles.inputContainer}
                 icon={
@@ -85,7 +84,6 @@ const Register = () => {
               <Text style={styles.label}>Correo electrónico</Text>
               <Input
                 onChangeText={(value) => (emailRef.current = value)}
-                placeholder="tu@email.com"
                 keyboardType="email-address"
                 autoCapitalize="none"
                 containerStyle={styles.inputContainer}
@@ -104,7 +102,6 @@ const Register = () => {
                 <Input
                   onChangeText={(value) => (passwordRef.current = value)}
                   secureTextEntry={!showPassword}
-                  placeholder="Mínimo 6 caracteres"
                   containerStyle={styles.inputContainer}
                   icon={
                     <Icons.LockIcon
