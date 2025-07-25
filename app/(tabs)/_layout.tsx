@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import CustomTabs from "@/components/CustomTabs";
+import CustomTabs from "@/components/navigation/CustomTabs";
 
 export default function TabLayout() {
   return (

@@ -1,10 +1,9 @@
 import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
-import ScreenWrapper from "@/components/ScreenWrapper";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { colors, radius, spacingX, spacingY } from "@/constants/theme";
 import { verticalScale } from "@/utils/styling";
-import Header from "@/components/Header";
-import Typo from "@/components/Typo";
+import Typo from "@/components/ui/Typo";
 import { useAuth } from "@/contexts/authContext";
 import { Image } from "expo-image";
 import { getProfileImage } from "@/service/imageService";
@@ -13,9 +12,12 @@ import * as Icons from "phosphor-react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { signOut } from "firebase/auth";
 import { auth } from "@/config/firebase";
+import { useRouter } from "expo-router";
+import Header from "@/components/layout/Header";
 
 const Profile = () => {
   const { user } = useAuth();
+  const router = useRouter();
 
   const accountOptions: accountOptionType[] = [
     {
@@ -59,7 +61,10 @@ const Profile = () => {
   const handlePress = async (item: accountOptionType) => {
     if (item.title === "Cerrar sesión") {
       showLogoutAlert();
-    }
+    };
+
+    if(item.routeName) router.push(item.routeName);
+
   };
 
   const showLogoutAlert = () => {

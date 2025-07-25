@@ -1,15 +1,15 @@
 import { StyleSheet, View, Text, Pressable, Alert } from "react-native";
 import React, { useRef, useState } from "react";
-import ScreenWrapper from "@/components/ScreenWrapper";
+import ScreenWrapper from "@/components/layout/ScreenWrapper";
 import { colors, spacingX, spacingY } from "@/constants/theme";
 import { verticalScale } from "@/utils/styling";
-import BackButton from "@/components/BackButton";
-import Typo from "@/components/Typo";
-import Input from "@/components/Input";
+import BackButton from "@/components/ui/BackButton";
+import Typo from "@/components/ui/Typo";
+import Input from "@/components/ui/Input";
 import * as Icons from "phosphor-react-native";
-import Button from "@/components/Button";
 import { useRouter } from "expo-router";
 import { useAuth } from "@/contexts/authContext";
+import Button from "@/components/ui/Button";
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
