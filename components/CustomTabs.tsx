@@ -28,7 +28,6 @@ const tabbarIcons = {
 
 export default function CustomTabs({
   state,
-  descriptors,
   navigation,
 }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
