@@ -474,7 +474,7 @@ const Login = () => {
               style={styles.loginButton}
             >
               <Typo size={16} fontWeight="700" color={colors.black}>
-                {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
+                Iniciar sesión
               </Typo>
             </Button>
           </Animated.View>
