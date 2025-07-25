@@ -261,7 +261,7 @@ const Login = () => {
     const res = await loginUser(email, password);
     setIsLoading(false);
     if (!res.success) {
-      console.log("Login failed:", res.msg);
+      return alert(res.msg || "Error al iniciar sesión");
     }
   };
 

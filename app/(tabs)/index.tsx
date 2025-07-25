@@ -10,7 +10,7 @@ import ScreenWrapper from "@/components/ScreenWrapper";
 const Home = () => {
   const { user } = useAuth();
 
-  console.log("Usuario logeado:", user);
+  // console.log("Usuario logeado:", user);
 
   const handleLogout = async () => {
     await signOut(auth);
