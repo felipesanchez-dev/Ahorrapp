@@ -290,10 +290,6 @@ const Login = () => {
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <BackButton />
-        </View>
-
         <Animated.View
           style={[
             styles.content,
