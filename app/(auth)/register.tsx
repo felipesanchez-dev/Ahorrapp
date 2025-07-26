@@ -38,7 +38,12 @@ const Register = () => {
   });
 
   const validate = () => {
-    const newErrors = { name: "", email: "", password: "", confirmPassword: "" };
+    const newErrors = {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    };
     let isValid = true;
 
     if (!name.trim()) {
@@ -117,7 +122,7 @@ const Register = () => {
                 autoCapitalize="words"
                 containerStyle={[
                   styles.inputContainer,
-                  errors.name ? styles.inputError : null,
+                  errors.name ? styles.inputError : {},
                 ]}
                 icon={
                   <Icons.UserIcon
@@ -147,7 +152,7 @@ const Register = () => {
                 autoCapitalize="none"
                 containerStyle={[
                   styles.inputContainer,
-                  errors.email ? styles.inputError : null,
+                  errors.email ? styles.inputError : {},
                 ]}
                 icon={
                   <Icons.AtIcon
@@ -177,14 +182,12 @@ const Register = () => {
                   secureTextEntry={!showPassword}
                   containerStyle={[
                     styles.inputContainer,
-                    errors.password ? styles.inputError : null,
+                    errors.password ? styles.inputError : {},
                   ]}
                   icon={
                     <Icons.LockIcon
                       size={verticalScale(20)}
-                      color={
-                        errors.password ? colors.error : colors.neutral400
-                      }
+                      color={errors.password ? colors.error : colors.neutral400}
                     />
                   }
                 />
@@ -226,7 +229,7 @@ const Register = () => {
                   secureTextEntry={!showConfirmPassword}
                   containerStyle={[
                     styles.inputContainer,
-                    errors.confirmPassword ? styles.inputError : null,
+                    errors.confirmPassword ? styles.inputError : {},
                   ]}
                   icon={
                     <Icons.LockKeyIcon
@@ -263,9 +266,7 @@ const Register = () => {
                     color={colors.error}
                     weight="fill"
                   />
-                  <Text style={styles.errorText}>
-                    {errors.confirmPassword}
-                  </Text>
+                  <Text style={styles.errorText}>{errors.confirmPassword}</Text>
                 </Animated.View>
               )}
             </View>

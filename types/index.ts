@@ -100,11 +100,11 @@ export type TransactionItemProps = {
 
 export interface InputProps extends TextInputProps {
   icon?: React.ReactNode;
-  containerStyle?: ViewStyle;
+  containerStyle?: ViewStyle | ViewStyle[]; 
   inputStyle?: TextStyle;
   inputRef?: React.RefObject<TextInput>;
-   label?: string;
-  //   error?: string;
+  label?: string;
+  error?: string;
 }
 
 export interface CustomButtonProps extends TouchableOpacityProps {
