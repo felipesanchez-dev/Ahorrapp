@@ -89,6 +89,7 @@ const Profile = () => {
   };
   const handleLogout = async () => {
     await signOut(auth);
+    router.push("/login");
   };
 
   return (
