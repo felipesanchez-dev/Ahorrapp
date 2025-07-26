@@ -1,11 +1,12 @@
-import { Dimensions, Platform, StatusBar, View } from "react-native";
+import { StatusBar, View } from "react-native";
 import React from "react";
 import { ScreenWrapperProps } from "@/types";
 import { colors } from "@/constants/theme";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const ScreenWrapper = ({ style, children }: ScreenWrapperProps) => {
-  const { height } = Dimensions.get("window");
-  const paddingTop = Platform.OS === "ios" ? height * 0.06 : 50;
+  const { top } = useSafeAreaInsets();
+  const paddingTop = top > 0 ? top : 30;
 
   return (
     <View
